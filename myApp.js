@@ -6,29 +6,7 @@
 var express = require("express"); // Do Not Edit
 var app = express(); // Do Not Edit
 
-// ----
-
-/**  7) Ask browsers to access your site via HTTPS only - `helmet.hsts()` */
-
-// HTTP Strict Transport Security (HSTS) is a web security policy mechanism which
-// helps to protect websites against protocol downgrade attacks and cookie hijacking.
-// If your website can be accessed via HTTPS you can ask user's browsers
-// to avoid using insecure HTTP. Setting the header `Strict-Transport-Security`
-// instructs browsers to use HTTPS for all the future requests occurring in a
-// specified amount of time. This will work for the requests coming **after**
-// the initial request.
-
-// Configure `helmet.hsts()` to instruct browsers to use HTTPS for the next
-// **90 days**, passing the config object {maxAge: timeInSeconds}.
-// HyperDev already has **hsts** enabled, to override its settings you need to
-// set the field `force` to `true` in the config object. To not alter hyperdev security
-// policy we will intercept and restore the header, after inspecting it for testing.
-
 var ninetyDaysInSeconds = 90 * 24 * 60 * 60;
-
-//**Note**:
-// Configuring HTTPS on a custom website requires the acquisition of a domain,
-// and a SSL/TLS Certificate.
 
 /** 8) Disable DNS Prefetching - `helmet.dnsPrefetchControl()` */
 
@@ -118,6 +96,7 @@ app.use(helmet.frameguard({ action: "deny" }));
 app.use(helmet.xssFilter());
 app.use(helmet.noSniff());
 app.use(helmet.ieNoOpen());
+app.use(helmet.hsts({ maxAge: ninetyDaysInSeconds, force: true }));
 app.use(express.static("public"));
 
 app.disable("strict-transport-security");
