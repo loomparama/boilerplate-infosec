@@ -8,16 +8,6 @@ var app = express(); // Do Not Edit
 
 var ninetyDaysInSeconds = 90 * 24 * 60 * 60;
 
-/** 9) Disable Client-Side Caching - `helmet.noCache()` */
-
-// If you are releasing an update for your website, and you want your users
-// to download the newer, more performant and safer version, you can (try to)
-// disable caching on client's browser, for your website. It can be useful
-// in development too. Caching has performance benefits, and you will lose them,
-// use this option only when there is a real need.
-
-// Use helmet.noCache()
-
 /** 10) Content Security Policy - `helmet.contentSecurityPolicy()` */
 
 // This challenge highlights one promising new defense that can significantly reduce
@@ -85,6 +75,7 @@ app.use(helmet.noSniff());
 app.use(helmet.ieNoOpen());
 app.use(helmet.hsts({ maxAge: ninetyDaysInSeconds, force: true }));
 app.use(helmet.dnsPrefetchControl());
+app.use(helmet.noCache());
 app.use(express.static("public"));
 
 app.disable("strict-transport-security");
