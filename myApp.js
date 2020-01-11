@@ -8,17 +8,6 @@ var app = express(); // Do Not Edit
 
 // ----
 
-/** 5) Avoid inferring the response MIME type - `helmet.noSniff()` */
-
-// Browsers can use content or MIME sniffing to override response `Content-Type`
-// headers to guess and process the data using an implicit content type.
-// While this can be convenient in some scenarios, it can also lead to
-// some dangerous attacks.
-// This middleware sets the X-Content-Type-Options header to `nosniff`,
-// instructing the browser to not bypass the provided `Content-Type`.
-
-// Use `helmet.noSniff()`
-
 /** 6) Prevent IE from opening *untrusted* HTML - `helmet.ieNoOpen()` */
 
 // Some web applications will serve untrusted HTML for download. By default,
@@ -131,17 +120,24 @@ var ninetyDaysInSeconds = 90 * 24 * 60 * 60;
 // ---- DO NOT EDIT BELOW THIS LINE ---------------------------------------
 
 module.exports = app;
+
 var api = require("./server.js");
 var helmet = require("helmet");
+
 app.use(helmet.hidePoweredBy({ setTo: "PHP 4.2.0" }));
 app.use(helmet.frameguard({ action: "deny" }));
 app.use(helmet.xssFilter());
+app.use(helmet.noSniff());
 app.use(express.static("public"));
+
 app.disable("strict-transport-security");
+
 app.use("/_api", api);
+
 app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
 });
+
 var listener = app.listen(process.env.PORT || 3000, function() {
   console.log("Your app is listening on port " + listener.address().port);
 });
