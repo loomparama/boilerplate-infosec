@@ -8,27 +8,6 @@ var app = express(); // Do Not Edit
 
 // ----
 
-/** 4) Mitigate the risk of XSS - `helmet.xssFilter()` */
-
-// Cross-site scripting (XSS) is a very frequent type of attack where malicious
-// script are injected into vulnerable pages, on the purpous of stealing sensitive
-// data like session cookies, or passwords. The basic rule to lower the risk
-// of an XSS attack is simple: **"Never trust user's input"**, so as a developer
-// you should always *sanitize* all the input coming from the outside.
-// This includes data coming from forms, GET query urls, and even from
-// POST bodies. Sanitizing means that you should find and encode the characters
-// that may be dangerous e.g. `<`, `>`.
-// More Info [here](https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet).
-
-// Modern browsers can help mitigating XSS risk by adoptiong software strategies,
-// which often are configurable via http headers.
-// The `X-XSS-Protection` HTTP header is a basic protection.  When the browser
-// detects a potential injected script using an heuristic filter,
-// it changes it, making the script not executable.
-// It still has limited support.
-
-// Use `helmet.xssFilter()`
-
 /** 5) Avoid inferring the response MIME type - `helmet.noSniff()` */
 
 // Browsers can use content or MIME sniffing to override response `Content-Type`
@@ -156,6 +135,7 @@ var api = require("./server.js");
 var helmet = require("helmet");
 app.use(helmet.hidePoweredBy({ setTo: "PHP 4.2.0" }));
 app.use(helmet.frameguard({ action: "deny" }));
+app.use(helmet.xssFilter());
 app.use(express.static("public"));
 app.disable("strict-transport-security");
 app.use("/_api", api);
