@@ -8,17 +8,6 @@ var app = express(); // Do Not Edit
 
 // ----
 
-/** 6) Prevent IE from opening *untrusted* HTML - `helmet.ieNoOpen()` */
-
-// Some web applications will serve untrusted HTML for download. By default,
-// some versions of Internet Explorer will allow you to open those HTML files
-// in the context of your site, which means that an untrusted HTML page could
-// start doing bad things inside your pages.
-// This middleware sets the `X-Download-Options` header to `noopen`,
-// to prevent IE users from executing downloads in the *trusted* site's context.
-
-// Use `helmet.ieNoOpen()`
-
 /**  7) Ask browsers to access your site via HTTPS only - `helmet.hsts()` */
 
 // HTTP Strict Transport Security (HSTS) is a web security policy mechanism which
@@ -128,6 +117,7 @@ app.use(helmet.hidePoweredBy({ setTo: "PHP 4.2.0" }));
 app.use(helmet.frameguard({ action: "deny" }));
 app.use(helmet.xssFilter());
 app.use(helmet.noSniff());
+app.use(helmet.ieNoOpen());
 app.use(express.static("public"));
 
 app.disable("strict-transport-security");
