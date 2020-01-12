@@ -13,20 +13,29 @@ module.exports = app;
 var api = require("./server.js");
 var helmet = require("helmet");
 
-app.use(helmet.hidePoweredBy({ setTo: "PHP 4.2.0" }));
-app.use(helmet.frameguard({ action: "deny" }));
-app.use(helmet.xssFilter());
-app.use(helmet.noSniff());
-app.use(helmet.ieNoOpen());
-app.use(helmet.hsts({ maxAge: ninetyDaysInSeconds, force: true }));
-app.use(helmet.dnsPrefetchControl());
-app.use(helmet.noCache());
 app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "trusted-cdn.com"]
-    }
+  helmet({
+    hidePoweredBy: {
+      setTo: "PHP 4.2.0"
+    },
+    frameguard: {
+      action: "deny"
+    },
+    xssFilter: true,
+    noSniff: true,
+    ieNoOpen: true,
+    noCache: true,
+    hsts: {
+      maxAge: ninetyDaysInSeconds,
+      force: true
+    },
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "trusted-cdn.com"]
+      }
+    },
+    dnsPrefetchControl: true
   })
 );
 app.use(express.static("public"));
